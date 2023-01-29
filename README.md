@@ -5,7 +5,7 @@ I have no relationship to companies that make or distribute the ROTEM sigma. The
 
 ROTEM sigma exported text files do not import into R in an easily usable way - each ROTEM channel gets placed on its own line, so an individual patient will have multiple lines per test.
 
-This script takes the export TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. It also has a script to upload to a REDCap project. The output is consistent with Tidyverse (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)) principles of one row per patient/test and one cell per variable.
+This script takes the exported TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. It also has a script to upload to a REDCap project. The output is consistent with Tidyverse principles of one row per patient/test and one cell per variable (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)).
 
   
 It is assumed that the patient's ID is in the ROTEM Sample ID column.
