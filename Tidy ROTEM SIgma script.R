@@ -10,8 +10,12 @@ p_load(tidyverse, checkmate, stringr, lubridate, gdata, readxl, gmodels, naniar,
 
 
 
+# STEP 1 ------------------------------------------------------------------
+
+
 # load txt file, clean names, remove * ------------------------------------
-path_to_file = file.path("input the path to your ROTEM sigma .txt file")
+path_to_file = file.path("input the path to your ROTEM sigma .txt file") # to enter the filepath correctly
+# you dont need to enter the \ , just enter the folders like ("C:", "ROTEM" , "Backups" , "filename.txt")
 
 rotem <- read_delim(path_to_file, "\t", escape_double = FALSE, trim_ws = TRUE)%>%
   clean_names()%>%
@@ -30,11 +34,18 @@ rotem <- read_delim(path_to_file, "\t", escape_double = FALSE, trim_ws = TRUE)%>
   mutate(rotem_start_time = fill.na(rotem_start_time))%>%
   mutate(rotem_run_time = fill.na(rotem_run_time))
 
-#make it wide
 
+# STEP 2 ------------------------------------------------------------------
+
+
+#make it wide, this essentially creates the tidy data
 wide_rotem <- rotem%>%
   group_by(uni_id)%>%
   pivot_wider(names_from = test_name, values_from = c(start_time, run_time, ct,a5,a10,a20,a30,cft,mcf,li30,li45,li60,ml))
+
+
+# STEP 3 ------------------------------------------------------------------
+
 
 #define as likely cardiac or not
 # only run this if you want this as an extra column for later
@@ -43,6 +54,9 @@ rotem_final <- wide_rotem%>%
   mutate(possible_cardiac = if_else(is.na(`start_time_heptem c`), "no", "yes", "no"))%>%
   mutate(patient_name = "")%>%
   clean_names()
+
+
+# STEP 4 ------------------------------------------------------------------
 
 
 # upload to redcap --------------------------------------------------------
@@ -57,6 +71,9 @@ api_key <- "input your RECAP project API key"
 #create new record
 redcap_write(ds=rotem_final, redcap_uri=uri, token=api_key)
 
+
+
+# STEP 5 ------------------------------------------------------------------
 
 
 # upload images -----------------------------------------------------------
@@ -105,14 +122,14 @@ rid <- image_upload$uni_id
 rotemImageUpload <- function(x, y) {
   file.name <- x
   record.id <- y
-  file_path <- file.path("C:","ROTEM", "rotem-study", file.name)
+  file_path <- file.path("path to the folder with the image files", file.name)
   field <- if_else(str_detect(file.name,"fibtem"), "fibtem_image",
                    if_else(str_detect(file.name,"aptem"), "aptem_image",
                            if_else(str_detect(file.name,"intem"), "intem_image",
                                    if_else(str_detect(file.name,"extem"), "extem_image",
                                            if_else(str_detect(file.name,"heptem"), "heptem_image", NA_character_ , NA_character_)))))
   
-  images_in_folder <- list.files(file.path("C:","ROTEM", "rotem-study"))
+  images_in_folder <- list.files(file.path("path to the folder with the image files"))
   
   if  (any(grepl(file.name,images_in_folder)) == TRUE) {
   
@@ -120,12 +137,11 @@ rotemImageUpload <- function(x, y) {
     redcap_uri = uri, token = api_key)
   
     
-  file.move.path <- file.path("C:","ROTEM", "imageupload", file.name)
+  file.move.path <- file.path("path to the folder with the image files", file.name)
   file.rename(file_path, file.move.path)
   
 }
 
 }
 
-map2(.x=fn, .y=rid, .f=rotemImageUpload)  
-
+map2(.x=fn, .y=rid, .f=rotemImageUpload) 
