@@ -2,7 +2,7 @@
 
 I have no relationship to companies that make or distribute the ROTEM sigma. These R scripts can be used to store data for research purposes and audit. 
 
-This script takes the export TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma] (https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidys them. Also has a script to upload to a REDCap project
+This script takes the export TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. It also has a script to upload to a REDCap project.
 
 
 ROTEM sigma exported text files do not import into R in an easily usable way - each ROTEM channel gets placed on its own line, so an individual patient will have multiple lines per test.
