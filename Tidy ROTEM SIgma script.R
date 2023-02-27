@@ -26,9 +26,13 @@ rotem <- read_delim(path_to_file, "\t", escape_double = FALSE, trim_ws = TRUE)%>
   filter(patient_name != "training, training", patient_name != "ABC, DEF", patient_name != "demo, demo")%>%
   mutate(start_time = ymd_hms(start_time))%>%
   arrange(start_time)%>%
-  #the next line creates an ID from the patient id and ROTEM start time - this is just used as a sample ID number
-  mutate(uni_id = if_else(test_name == "fibtem c", (str_c(patient_id, hour(start_time), minute(start_time), sep = "-")), NA_character_, NA_character_))%>%
-  mutate(uni_id = fill.na(uni_id))%>%
+  mutate(uni_id = case_when(
+    test_name == "fibtem c" & lag(test_name == "aptem c") ~ str_c(patient_id, hour(start_time), minute(start_time), sep = "-"),
+    test_name == "extem c" & lag(test_name == "fibtem c") ~ str_c(lag(patient_id), lag(hour(start_time)), lag(minute(start_time)), sep = "-"),
+    test_name == "intem c" & lag(test_name == "extem c") ~ str_c(lag(n=2, patient_id), lag(n=2,hour(start_time)), lag(n=2,minute(start_time)), sep = "-"),
+    test_name == "aptem c" & lag(test_name == "intem c") ~ str_c(lag(n=3, patient_id), lag(n=3,hour(start_time)), lag(n=3,minute(start_time)), sep = "-"),
+    test_name == "heptem c" & lag(test_name == "intem c") ~ str_c(lag(n=3, patient_id), lag(n=3,hour(start_time)), lag(n=3,minute(start_time)), sep = "-"))) %>%
+  fill(uni_id, .direction = "up") %>%
   mutate(rotem_start_time = if_else(test_name == "fibtem c", str_c(start_time), NA_character_, NA_character_))%>%
   mutate(rotem_run_time = if_else(test_name == "fibtem c", str_c(run_time), NA_character_, NA_character_))%>%
   mutate(rotem_start_time = fill.na(rotem_start_time))%>%
