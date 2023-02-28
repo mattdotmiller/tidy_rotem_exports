@@ -8,11 +8,11 @@ ROTEM sigma exported text files do not import into R in an easily usable way - e
 This script takes the exported TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. It also has a script to upload to a REDCap project. The output is consistent with Tidyverse principles of one row per patient/test and one cell per variable (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)).
 
   
-It is assumed that the patient's ID is in the ROTEM Sample ID column.
+It is assumed that the patient's ID is in the ROTEM 'Patient ID' column.
 
   
 
-*   STEP 1: Import the txt files. You will need to enter the path to the text files in the file.path command. A unique ID is created from the MRN and the start date and time of the ROTEM. The MRN is kept in a separate column. The uni\_id is needed as a unique record\_id is needed for REDCap, so the MRN (which can be repeated if there is more than one ROTEM per patient) won't suffice as a record\_id
+*   STEP 1: Import the txt files. You will need to enter the path to the text files in the file.path command. A unique ID is created from the MRN and the start date and time of the ROTEM. The MRN is kept in a separate column. The uni\_id is needed as a unique record\_id is needed for REDCap, as the MRN (which can be repeated if there is more than one ROTEM per patient) won't suffice as a record\_id
 *   STEP 2: PIVOT the ROTEM results wide. This creates a column for each of the ROTEM measurements for each test. If the test was stopped before the measurement was completed, NA's are entered (for example, ROTEM stopped at 30mins, EXTEM C ML60 will be NA
 *   STEP 3: Add a label if HEPTEM was not invalid as likely a cardiac surgery case
 *   STEP 4: Upload to REDCap. You will need your own REDCap project. The data dictionary provided in this repository will be needed to map the R project fields with the REDCap project, otherwise, the upload will fail
@@ -27,7 +27,7 @@ It is assumed that the patient's ID is in the ROTEM Sample ID column.
 
   
 
-The final data frame consists of the following columns. ct = clotting time, cft = clot formation time, ml = maximum lysis, li = lysis
+The final data frame consists of the following columns. Note: ct = clotting time, cft = clot formation time, ml = maximum lysis, li = lysis. the sample_id column is a field on the ROTEM sigma that could be used to identify a sampe for a study, for example listing blood products given. 
 
 | uni\_id |
 | --- |
