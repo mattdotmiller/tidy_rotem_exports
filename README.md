@@ -10,7 +10,7 @@ The ROTEM sigma exported text files do not import into R in usable format - each
 This script takes the exported TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. The output is consistent with Tidyverse principles of one row per patient/test and one cell per variable (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)). It also has a script to upload to a REDCap project. 
 
   
-It is assumed that the patient's ID is in the ROTEM 'Patient ID' column.
+**It is assumed that the patient's ID is in the ROTEM 'Patient ID' column**
 
 
 *   STEP 1: Import the txt files. You will need to enter the path to the text files in the file.path command. A unique ID is created from the MRN and the start date and time of the fibtem channel. The MRN is kept in a separate column. The uni\_id is needed as a unique record\_id is needed for REDCap, as the MRN (which can be repeated if there is more than one ROTEM per patient) won't suffice as a record\_id for grouping purposes.
