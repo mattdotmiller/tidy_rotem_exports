@@ -1,26 +1,27 @@
 # Tidy ROTEM sigma exports
 
-I have no relationship to companies that make or distribute the ROTEM sigma. These R scripts can be used to store data for research purposes and audit. 
+*Note: I have no relationship to companies that make or distribute the ROTEM sigma.*
+
+These R scripts can be used to store ROTEM sigma data for research purposes and audit. 
 
 
-ROTEM sigma exported text files do not import into R in an easily usable way - each ROTEM channel gets placed on its own line, so an individual patient will have multiple lines per test.
+The ROTEM sigma exported text files do not import into R in usable format - each ROTEM channel gets placed on its own line, so an individual patient will have multiple lines per individual test. In addition, each test has its own start time making grouping of tests dififcult. 
 
-This script takes the exported TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. It also has a script to upload to a REDCap project. The output is consistent with Tidyverse principles of one row per patient/test and one cell per variable (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)).
+This script takes the exported TXT files from the ROTEM sigma ([https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma](https://werfen.com/au/en/haemostasis-diagnostics/rotem-sigma)) and tidies them. The output is consistent with Tidyverse principles of one row per patient/test and one cell per variable (see [https://en.wikipedia.org/wiki/Tidyverse](https://en.wikipedia.org/wiki/Tidyverse)). It also has a script to upload to a REDCap project. 
 
   
 It is assumed that the patient's ID is in the ROTEM 'Patient ID' column.
 
-  
 
-*   STEP 1: Import the txt files. You will need to enter the path to the text files in the file.path command. A unique ID is created from the MRN and the start date and time of the ROTEM. The MRN is kept in a separate column. The uni\_id is needed as a unique record\_id is needed for REDCap, as the MRN (which can be repeated if there is more than one ROTEM per patient) won't suffice as a record\_id
-*   STEP 2: PIVOT the ROTEM results wide. This creates a column for each of the ROTEM measurements for each test. If the test was stopped before the measurement was completed, NA's are entered (for example, ROTEM stopped at 30mins, EXTEM C ML60 will be NA
-*   STEP 3: Add a label if HEPTEM was not invalid as likely a cardiac surgery case
-*   STEP 4: Upload to REDCap. You will need your own REDCap project. The data dictionary provided in this repository will be needed to map the R project fields with the REDCap project, otherwise, the upload will fail
+*   STEP 1: Import the txt files. You will need to enter the path to the text files in the file.path command. A unique ID is created from the MRN and the start date and time of the fibtem channel. The MRN is kept in a separate column. The uni\_id is needed as a unique record\_id is needed for REDCap, as the MRN (which can be repeated if there is more than one ROTEM per patient) won't suffice as a record\_id for grouping purposes.
+*   STEP 2: PIVOT the ROTEM results wide. This creates a column for each of the ROTEM measurements for each test. If the test was stopped before the measurement was completed, NA's are entered (for example, ROTEM stopped at 30mins, EXTEM C ML60 will be NA).
+*   STEP 3: Add a label if HEPTEM was not invalid (eg a HEPTEM was run) as likely a cardiac surgery case.
+*   STEP 4: Upload to REDCap. You will need your own REDCap project but you should use the data dictionry provided here. The data dictionary in this repository will be needed to map the R project fields with the REDCap project, otherwise the upload will fail. 
 *   STEP 5: Upload the image files if you have exported them.
 
   
 
-**Note**: for steps 1 and 5, you need to enter the path of the files.
+**Note**: for steps 1 and 5, you need to enter the path of the exported ROTEM .txt and image files.
 
 *   For line 17: To enter the file.path correctly enter the folders and then the filename like ("C:", "ROTEM" , "Backups" , "filename.txt")
 *   For lines 125, 132, 140: To enter the file.path correctly enter the folders but NOT the filename ("C:", "ROTEM" , "Backups")
